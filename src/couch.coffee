@@ -196,10 +196,11 @@ class CouchConnector
 			debug docs
 
 			if where = filter?.where
-				for k, v of where
-					# CouchDb stores dates as Unix time
-					where[k] = v.getTime() if _.isDate v
-				docs = _.where docs, where
+				if not _.isEmpty(where)
+					for k, v of where
+						# CouchDb stores dates as Unix time
+						where[k] = v.getTime() if _.isDate v
+					docs = _.where docs, where
 
 			
 			debug "CouchDB all: docs after where"
@@ -412,3 +413,4 @@ helpers =
 				return helpers.invokeCallbackOrLogError callback, err, insertedDoc
 
 
+ssssss
