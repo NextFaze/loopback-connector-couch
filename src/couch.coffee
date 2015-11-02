@@ -211,19 +211,19 @@ class CouchConnector
 			debug docs
 
 			if where = filter?.where
-				debug where
-				docs = _.select docs, (doc) =>
-					isMatch = true
-					for k, v of where
-						# CouchDb stores dates as Unix time
-						where[k] = v.getTime() if _.isDate v
-						# support loopback inq queries
-						if where[k].inq
-							debug where[k].inq
-							isMatch = false if not _.contains where[k].inq, doc[k]
-						else
-							isMatch = false if doc[k] != where[k]
-					return isMatch
+				if not _.isEmpty(where)
+					docs = _.select docs, (doc) =>
+						isMatch = true
+						for k, v of where
+							# CouchDb stores dates as Unix time
+							where[k] = v.getTime() if _.isDate v
+							# support loopback inq queries
+							if where[k].inq
+								debug where[k].inq
+								isMatch = false if not _.contains where[k].inq, doc[k]
+							else
+								isMatch = false if doc[k] != where[k]
+						return isMatch
 
 			debug "CouchDB all: docs after where"
 			debug docs
