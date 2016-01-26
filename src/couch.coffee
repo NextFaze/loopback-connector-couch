@@ -156,14 +156,15 @@ class CouchConnector
 		debug filter
 		# Consider first the easy case that a specific id is requested
 		if id = filter?.where?.id
-			debug '...moving to findById from all'
 			# support include filter
 			if filter?.include
 				return @findById model, id, (err, result) =>
 					return callback err if err
 					@_models[model].model.include result, filter.include, callback
 			else
-				return @findById(model, id, callback)
+				if typeof id != 'object'
+					debug '...moving to findById from all'
+					return @findById(model, id, callback)
 
 		params =
 			keys: [model]
